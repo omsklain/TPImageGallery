@@ -12,12 +12,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     private var refreshControl = UIRefreshControl()
-    
+
     var presenter = Presenter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        if presenter.items.count <= 20 {
+            presenter.fetchItems { [unowned self] in
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+    
     }
     
     private func setupCollectionView () {
@@ -26,29 +34,22 @@ class ViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        cellRegistration(collectionView: collectionView)
+        self.collectionView.prefetchDataSource = self
         
-        refreshCollection()
+        cellRegistration(collectionView: collectionView)
+
         
     }
     
     @objc private func refreshCollection() {
-        let colorsRandom = ["green","red","yellow"].randomElement() ?? "green"
-        let typeRandom = ["flowers","auto","space"].randomElement() ?? "flowers"
-        let filter = colorsRandom + "+" + typeRandom
-        let countRandom = Int.random(in: 50...150)
-        
-        let url = "https://pixabay.com/api/?key=25724093-3271289b67930f6caed039a98&q=\(filter)&image_type=photo&per_page=\(countRandom)"
-        presenter.fetchItems(url) { [unowned self] in
+        presenter.reload { [unowned self] in
             DispatchQueue.main.async {
-                self.refreshControl.endRefreshing()
                 self.collectionView.reloadData()
-                self.presenter.clearCache()
+                self.refreshControl.endRefreshing()
             }
         }
     }
-    
-    
+
 }
 
 // MARK: - UICollectionViewDataSource
@@ -61,20 +62,15 @@ extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter.items.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.reuseIdentifier, for: indexPath) as! CollectionViewCell
         let item = presenter.items[indexPath.item]
-        cell.configure(item: item)
-        cell.imageView.image = nil
-        
-        presenter.loadItem(url: item.webformatURL) { item in
-            DispatchQueue.main.async {
-                cell.imageView.image = item?.image
-            }
-        }
-        
+        //DispatchQueue.main.async {
+            cell.configure(item: item)
+        //}
         return cell
     }
     
@@ -86,13 +82,11 @@ extension ViewController: UICollectionViewDataSource {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailsView" {
             guard let destinationVC = segue.destination as? DetailsViewController, let itemSender = sender as? Item else { return }
-            presenter.loadItem(url: itemSender.largeImageURL) { item in
-                DispatchQueue.main.async {
-                    destinationVC.mainTitle = "ID: \(itemSender.id)"
-                    destinationVC.subTitle = item?.date.toStringFormat("d MMMM YYYY HH:mm:ss")
-                    destinationVC.image = item?.image
-                }
+            
+            DispatchQueue.main.async {
+                destinationVC.configure(item: itemSender)
             }
+
         }
     }
     
@@ -119,6 +113,55 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return paddingCell
+    }
+    
+    
+}
+
+//MARK: - UIScrollViewDelegate
+extension ViewController: UIScrollViewDelegate {
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let offesetY = scrollView.contentOffset.y
+//        let contentHeight = scrollView.contentSize.height
+//
+//        if offesetY > ( contentHeight - scrollView.frame.height ) - (scrollView.frame.height) {
+//            if !self.presenter.isFetching {
+//                self.presenter.isFetching = true
+//                let oldCountItems = self.presenter.items.count
+//
+//                self.presenter.isFetching = false
+//            }
+//        }
+//    }
+//
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//
+//    }
+    
+}
+
+// MARK: - UICollectionViewDataSourcePrefetching
+extension ViewController: UICollectionViewDataSourcePrefetching {
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            if indexPath.row >= self.presenter.items.count - 1 {
+                let oldCountItems = self.presenter.items.count
+                self.presenter.appendItemsNextPage { [unowned self] in
+                    var indexPaths: [IndexPath] = []
+                    for index in oldCountItems ... self.presenter.items.count - 1 {
+                        let indexPath = IndexPath(row:  index, section: 0)
+                        indexPaths.append(indexPath)
+                    }
+                    DispatchQueue.main.async {
+                        self.collectionView?.performBatchUpdates({
+                            self.collectionView?.insertItems(at: indexPaths)
+                        }, completion: nil)
+                    }
+                }
+            }
+        }
     }
     
     

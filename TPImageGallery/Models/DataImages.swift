@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct Item: Decodable {
+struct Item: Decodable, Encodable {
     
-    var id: Int
-    var webformatURL: String
-    var largeImageURL: String
-    var views: Int
-    var downloads: Int
-    var likes: Int
+    let id: Int
+    let webformatURL: String
+    let largeImageURL: String
+    let views: Int
+    let downloads: Int
+    let likes: Int
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -35,19 +35,23 @@ struct Item: Decodable {
         likes = try values.decode(Int.self, forKey: .likes)
     }
     
-    
 }
 
 struct DataImages: Decodable {
-
-    var items: [Item]
+    let total: Int
+    let totalHits: Int
+    let items: [Item]
     
     enum CodingKeys: String, CodingKey {
+        case total = "total"
+        case totalHits = "totalHits"
         case items = "hits"
     }
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        total = try values.decode(Int.self, forKey: .total)
+        totalHits = try values.decode(Int.self, forKey: .totalHits)
         items = try values.decode([Item].self, forKey: .items)
     }
     

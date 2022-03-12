@@ -10,31 +10,40 @@ import UIKit
 class DetailsViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
-    
-    var mainTitle: String? {
-        didSet {
-            self.navigationItem.title = mainTitle
-        }
-    }
-    
-    var subTitle: String? {
-        didSet {
-            self.navigationItem.setSubTitle(subTitle ?? "")
-        }
-    }
-    
-    var image: UIImage? {
-        didSet {
-            DispatchQueue.main.async {
-                self.imageView.image = self.image
-            }
-        }
-    }
+    @IBOutlet weak var progress: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.progress.isHidden = false
+        self.progress.startAnimating()
+        
     }
     
+    func configure(item: Item?) {
+        self.navigationItem.title = ""
+        self.navigationItem.setSubTitle("")
+        
+        //self.imageView.image = nil
+        
+        if let item = item {
+            self.navigationItem.title = String(item.id)
+            guard let url = URL(string: item.largeImageURL) else { return }
+            
+            MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
+                if error == nil, let data = data {
+                    guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
+                    if let image = UIImage(data: decodeData.data) {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.navigationItem.setSubTitle(decodeData.date.toStringFormat("d MMMM YYYY HH:mm:ss"))
+                            self?.imageView.image = image
+                            self?.progress.stopAnimating()
+                            self?.progress.isHidden = true
+                        }
+                    }
+                }
+            }
+        }
+    }
     
 }
 

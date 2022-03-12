@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		19000DBE27CA1E25004DDB0A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 19000DBD27CA1E25004DDB0A /* README.md */; };
+		190A678227D1D9F000F0C3D1 /* NetworkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190A678127D1D9EF00F0C3D1 /* NetworkRepository.swift */; };
+		190A678A27D63E6400F0C3D1 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190A678927D63E6400F0C3D1 /* Presenter.swift */; };
+		190A678C27D75EA300F0C3D1 /* MDCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190A678B27D75EA300F0C3D1 /* MDCache.swift */; };
+		190A678E27D760CC00F0C3D1 /* DCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190A678D27D760CC00F0C3D1 /* DCache.swift */; };
+		190A679027D7614E00F0C3D1 /* MDCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190A678F27D7614E00F0C3D1 /* MDCacheProtocol.swift */; };
+		190A679227D7628A00F0C3D1 /* MDCachedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190A679127D7628A00F0C3D1 /* MDCachedData.swift */; };
 		191CEB9927BBEDFA006A65F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191CEB9827BBEDFA006A65F8 /* AppDelegate.swift */; };
 		191CEB9B27BBEDFA006A65F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191CEB9A27BBEDFA006A65F8 /* SceneDelegate.swift */; };
 		191CEB9D27BBEDFA006A65F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191CEB9C27BBEDFA006A65F8 /* ViewController.swift */; };
@@ -18,13 +24,19 @@
 		191CEBC027BBF4BD006A65F8 /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 191CEBBE27BBF4BD006A65F8 /* CollectionViewCell.xib */; };
 		191CEBC427BC1829006A65F8 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191CEBC327BC1829006A65F8 /* DetailsViewController.swift */; };
 		191CEBC827BD6C76006A65F8 /* DataImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191CEBC727BD6C76006A65F8 /* DataImages.swift */; };
-		19297C0E27C9527400EDB0F2 /* ItemCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19297C0D27C9527400EDB0F2 /* ItemCache.swift */; };
-		19297C1027C9579C00EDB0F2 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19297C0F27C9579C00EDB0F2 /* Presenter.swift */; };
+		19297C0E27C9527400EDB0F2 /* MCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19297C0D27C9527400EDB0F2 /* MCache.swift */; };
 		19297C1227C97EAD00EDB0F2 /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19297C1127C97EAD00EDB0F2 /* Extension+Date.swift */; };
+		19B291F427DBEE81002385E5 /* MDCacheError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B291F327DBEE81002385E5 /* MDCacheError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		19000DBD27CA1E25004DDB0A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		190A678127D1D9EF00F0C3D1 /* NetworkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRepository.swift; sourceTree = "<group>"; };
+		190A678927D63E6400F0C3D1 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		190A678B27D75EA300F0C3D1 /* MDCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDCache.swift; sourceTree = "<group>"; };
+		190A678D27D760CC00F0C3D1 /* DCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCache.swift; sourceTree = "<group>"; };
+		190A678F27D7614E00F0C3D1 /* MDCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDCacheProtocol.swift; sourceTree = "<group>"; };
+		190A679127D7628A00F0C3D1 /* MDCachedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDCachedData.swift; sourceTree = "<group>"; };
 		191CEB9527BBEDFA006A65F8 /* TPImageGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TPImageGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		191CEB9827BBEDFA006A65F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		191CEB9A27BBEDFA006A65F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,9 +49,9 @@
 		191CEBBE27BBF4BD006A65F8 /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
 		191CEBC327BC1829006A65F8 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		191CEBC727BD6C76006A65F8 /* DataImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImages.swift; sourceTree = "<group>"; };
-		19297C0D27C9527400EDB0F2 /* ItemCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCache.swift; sourceTree = "<group>"; };
-		19297C0F27C9579C00EDB0F2 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		19297C0D27C9527400EDB0F2 /* MCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCache.swift; sourceTree = "<group>"; };
 		19297C1127C97EAD00EDB0F2 /* Extension+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
+		19B291F327DBEE81002385E5 /* MDCacheError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDCacheError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,12 +65,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		190A679327D7694F00F0C3D1 /* MDCache */ = {
+			isa = PBXGroup;
+			children = (
+				19B291F327DBEE81002385E5 /* MDCacheError.swift */,
+				190A678F27D7614E00F0C3D1 /* MDCacheProtocol.swift */,
+				19297C0D27C9527400EDB0F2 /* MCache.swift */,
+				190A678D27D760CC00F0C3D1 /* DCache.swift */,
+				190A678B27D75EA300F0C3D1 /* MDCache.swift */,
+			);
+			path = MDCache;
+			sourceTree = "<group>";
+		};
 		191CEB8C27BBEDFA006A65F8 = {
 			isa = PBXGroup;
 			children = (
 				19000DBD27CA1E25004DDB0A /* README.md */,
 				191CEB9727BBEDFA006A65F8 /* TPImageGallery */,
 				191CEB9627BBEDFA006A65F8 /* Products */,
+				19233B5C27CA85C8003F033A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,13 +99,13 @@
 			isa = PBXGroup;
 			children = (
 				19297C1127C97EAD00EDB0F2 /* Extension+Date.swift */,
-				191CEB9827BBEDFA006A65F8 /* AppDelegate.swift */,
 				191CEB9A27BBEDFA006A65F8 /* SceneDelegate.swift */,
 				191CEB9E27BBEDFA006A65F8 /* Main.storyboard */,
 				191CEBA127BBEE00006A65F8 /* Assets.xcassets */,
 				191CEBA327BBEE00006A65F8 /* LaunchScreen.storyboard */,
 				191CEB9C27BBEDFA006A65F8 /* ViewController.swift */,
 				191CEBC327BC1829006A65F8 /* DetailsViewController.swift */,
+				191CEB9827BBEDFA006A65F8 /* AppDelegate.swift */,
 				191CEBAD27BBF060006A65F8 /* Models */,
 				191CEBAC27BBF058006A65F8 /* UI */,
 				191CEBA627BBEE00006A65F8 /* Info.plist */,
@@ -100,11 +125,20 @@
 		191CEBAD27BBF060006A65F8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				19297C0F27C9579C00EDB0F2 /* Presenter.swift */,
-				19297C0D27C9527400EDB0F2 /* ItemCache.swift */,
 				191CEBC727BD6C76006A65F8 /* DataImages.swift */,
+				190A679127D7628A00F0C3D1 /* MDCachedData.swift */,
+				190A678927D63E6400F0C3D1 /* Presenter.swift */,
+				190A679327D7694F00F0C3D1 /* MDCache */,
+				190A678127D1D9EF00F0C3D1 /* NetworkRepository.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		19233B5C27CA85C8003F033A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,13 +214,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19297C1027C9579C00EDB0F2 /* Presenter.swift in Sources */,
+				190A678E27D760CC00F0C3D1 /* DCache.swift in Sources */,
 				191CEBBF27BBF4BD006A65F8 /* CollectionViewCell.swift in Sources */,
-				19297C0E27C9527400EDB0F2 /* ItemCache.swift in Sources */,
+				19297C0E27C9527400EDB0F2 /* MCache.swift in Sources */,
+				19B291F427DBEE81002385E5 /* MDCacheError.swift in Sources */,
+				190A679227D7628A00F0C3D1 /* MDCachedData.swift in Sources */,
+				190A678A27D63E6400F0C3D1 /* Presenter.swift in Sources */,
+				190A678227D1D9F000F0C3D1 /* NetworkRepository.swift in Sources */,
 				191CEB9D27BBEDFA006A65F8 /* ViewController.swift in Sources */,
 				191CEB9927BBEDFA006A65F8 /* AppDelegate.swift in Sources */,
 				19297C1227C97EAD00EDB0F2 /* Extension+Date.swift in Sources */,
+				190A679027D7614E00F0C3D1 /* MDCacheProtocol.swift in Sources */,
 				191CEBC827BD6C76006A65F8 /* DataImages.swift in Sources */,
+				190A678C27D75EA300F0C3D1 /* MDCache.swift in Sources */,
 				191CEBC427BC1829006A65F8 /* DetailsViewController.swift in Sources */,
 				191CEB9B27BBEDFA006A65F8 /* SceneDelegate.swift in Sources */,
 			);
@@ -338,6 +378,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A3C42PATAF;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TPImageGallery/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -368,6 +412,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A3C42PATAF;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TPImageGallery/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
