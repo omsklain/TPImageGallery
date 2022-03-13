@@ -36,10 +36,8 @@ class CollectionViewCell: UICollectionViewCell {
         
         if let item = item {
             self.itemId = item.id
-            
             self.id.text = String(item.id)
             guard let url = URL(string: item.webformatURL) else { return }
-            
             MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
                 if error == nil, let data = data {
                     guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
@@ -55,7 +53,6 @@ class CollectionViewCell: UICollectionViewCell {
                     }
                 }
             }
-            
         }
     }
     

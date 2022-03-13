@@ -12,6 +12,5 @@ public protocol MDCacheProtocol {
     
     func load(forKey key: String) throws -> T?
     func save(_ data: T, forKey key: String) throws
-    func removeAllObjects() throws
 }
 

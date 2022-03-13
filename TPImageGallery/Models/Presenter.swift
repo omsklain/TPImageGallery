@@ -16,7 +16,6 @@ class Presenter {
     
     var items: [Item] = [] {
         didSet {
-            print("items.count: \(items.count)")
             do {
                try dCachedItems.save(items, forKey: "itemsData")
             } catch {
@@ -48,16 +47,6 @@ class Presenter {
         return URL(string: urlString)
     }
     
-    func reload(complition: @escaping () -> ()) {
-        self.items = []
-        self.fetchPageNumber = 1
-        MDCachedData.shared.removeCachedData()
-        self.fetchItems {
-            complition()
-        }
-        print("items.count2: \(items.count)")
-    }
-    
     func appendItemsNextPage(complition: @escaping () -> ()) {
         self.fetchPageNumber += 1
         fetchItems(){
@@ -74,7 +63,6 @@ class Presenter {
                         let dataJson = try JSONDecoder().decode(DataImages.self, from: decodeData.data)
                         self.items.append(contentsOf: dataJson.items)
                         complition()
-                        print("items.count3: \(self.items.count)")
                     }
                 } catch  {
                     print("JSONDecoder:error: \(error)")

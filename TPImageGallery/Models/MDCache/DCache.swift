@@ -26,17 +26,7 @@ public final class DCache<T>: MDCacheProtocol where T: Codable {
         let data = try JSONEncoder().encode(data)
         try write(data, to: filePathURL)
     }
-    
-    public func removeAllObjects() throws {
-        let docDir = try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            .appendingPathComponent("DCache")
-        let docuURLS = try FileManager.default.contentsOfDirectory(at: docDir, includingPropertiesForKeys: nil)
-        for urls in docuURLS{
-            try FileManager.default.removeItem(at: urls)
-        }
-        
-    }
-    
+
     func assureDirectoryExists(filePathURL: URL) throws {
         if FileManager.default.fileExists(atPath: filePathURL.path) == false {
             try FileManager.default.createDirectory(at: filePathURL.deletingLastPathComponent(), withIntermediateDirectories: true)

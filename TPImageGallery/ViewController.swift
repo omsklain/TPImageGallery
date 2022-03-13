@@ -11,8 +11,6 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var refreshControl = UIRefreshControl()
-
     var presenter = Presenter()
     
     override func viewDidLoad() {
@@ -25,31 +23,15 @@ class ViewController: UIViewController {
                 }
             }
         }
-    
     }
     
     private func setupCollectionView () {
-        refreshControl.addTarget(self, action: #selector(refreshCollection), for: .valueChanged)
-        collectionView.refreshControl = refreshControl
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         self.collectionView.prefetchDataSource = self
-        
         cellRegistration(collectionView: collectionView)
-
-        
     }
     
-    @objc private func refreshCollection() {
-        presenter.reload { [unowned self] in
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-                self.refreshControl.endRefreshing()
-            }
-        }
-    }
-
 }
 
 // MARK: - UICollectionViewDataSource
@@ -62,15 +44,12 @@ extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter.items.count
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.reuseIdentifier, for: indexPath) as! CollectionViewCell
         let item = presenter.items[indexPath.item]
-        //DispatchQueue.main.async {
-            cell.configure(item: item)
-        //}
+        cell.configure(item: item)
         return cell
     }
     
@@ -82,14 +61,11 @@ extension ViewController: UICollectionViewDataSource {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailsView" {
             guard let destinationVC = segue.destination as? DetailsViewController, let itemSender = sender as? Item else { return }
-            
             DispatchQueue.main.async {
                 destinationVC.configure(item: itemSender)
             }
-
         }
     }
-    
     
 }
 
@@ -115,31 +91,8 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
         return paddingCell
     }
     
-    
 }
 
-//MARK: - UIScrollViewDelegate
-extension ViewController: UIScrollViewDelegate {
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let offesetY = scrollView.contentOffset.y
-//        let contentHeight = scrollView.contentSize.height
-//
-//        if offesetY > ( contentHeight - scrollView.frame.height ) - (scrollView.frame.height) {
-//            if !self.presenter.isFetching {
-//                self.presenter.isFetching = true
-//                let oldCountItems = self.presenter.items.count
-//
-//                self.presenter.isFetching = false
-//            }
-//        }
-//    }
-//
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//
-//    }
-    
-}
 
 // MARK: - UICollectionViewDataSourcePrefetching
 extension ViewController: UICollectionViewDataSourcePrefetching {
@@ -164,5 +117,5 @@ extension ViewController: UICollectionViewDataSourcePrefetching {
         }
     }
     
-    
 }
+

@@ -8,7 +8,7 @@
 import UIKit
 
 class MDCachedData {
-
+    
     struct DataItem: Codable {
         let data: Data
         let date: Date
@@ -28,7 +28,7 @@ class MDCachedData {
             }
         }
     }
-
+    
     func fetchDataByUrl(_ urlString: String, completion: @escaping (_ data: Data?, _ error: Error?) -> () ) {
         if let data = self.loadData(urlString) {
             completion(data, nil)
@@ -49,18 +49,10 @@ class MDCachedData {
         }
         dataTask.resume()
     }
-    
-    func removeCachedData() {
-        do {
-            try mdCache.removeAllObjects()
-        } catch {
-            print("MDCachedData:removeCachedData:error: \(error)")
-        }
-        
-    }
+
     
     // MARK: - Private functions
- 
+    
     private func loadData (_ forKey: String) -> Data? {
         do {
             let data = try mdCache.load(forKey: forKey)

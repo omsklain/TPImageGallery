@@ -16,19 +16,14 @@ class DetailsViewController: UIViewController {
         super.viewDidLoad()
         self.progress.isHidden = false
         self.progress.startAnimating()
-        
     }
     
     func configure(item: Item?) {
         self.navigationItem.title = ""
         self.navigationItem.setSubTitle("")
-        
-        //self.imageView.image = nil
-        
         if let item = item {
             self.navigationItem.title = String(item.id)
             guard let url = URL(string: item.largeImageURL) else { return }
-            
             MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
                 if error == nil, let data = data {
                     guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
@@ -66,6 +61,5 @@ extension UINavigationItem {
         
         self.titleView = stackView
     }
-    
     
 }

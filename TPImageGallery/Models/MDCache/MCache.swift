@@ -27,10 +27,6 @@ public final class MCache<T>: MDCacheProtocol where T: Codable {
         let data = try JSONEncoder().encode(value)
         cache.setObject(NSData(data: data), forKey: NSString(string: key))
     }
-    
-    public func removeAllObjects() {
-        cache.removeAllObjects()
-    }
-    
+
     
 }
