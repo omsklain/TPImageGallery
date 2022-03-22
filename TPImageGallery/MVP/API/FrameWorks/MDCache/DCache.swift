@@ -27,23 +27,24 @@ public final class DCache<T>: MDCacheProtocol where T: Codable {
         try write(data, to: filePathURL)
     }
 
-    func assureDirectoryExists(filePathURL: URL) throws {
+    // MARK: - Private functions
+    private func assureDirectoryExists(filePathURL: URL) throws {
         if FileManager.default.fileExists(atPath: filePathURL.path) == false {
             try FileManager.default.createDirectory(at: filePathURL.deletingLastPathComponent(), withIntermediateDirectories: true)
         }
     }
     
-    func filePathURL(forKey key: String) throws -> URL {
+    private func filePathURL(forKey key: String) throws -> URL {
         try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent("DCache")
             .appendingPathComponent(key)
     }
     
-    func write(_ data: Data, to url: URL) throws {
+    private func write(_ data: Data, to url: URL) throws {
         try data.write(to: url)
     }
     
-    func data(of url: URL) throws -> Data {
+    private func data(of url: URL) throws -> Data {
         try Data(contentsOf: url)
     }
     
