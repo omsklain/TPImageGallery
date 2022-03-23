@@ -10,8 +10,7 @@ import UIKit
 
 struct DetailsViewModel {
     
-    let img: UIImage
+    let id: Int
     let imageURL: String
-    let loadDate: Date
     
 }

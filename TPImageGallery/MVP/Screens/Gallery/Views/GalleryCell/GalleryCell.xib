@@ -59,6 +59,7 @@
             <size key="customSize" width="143" height="126"/>
             <connections>
                 <outlet property="date" destination="g9U-sB-eCm" id="f9N-av-OhJ"/>
+                <outlet property="idLabel" destination="9uk-vI-cwi" id="mjk-PP-Mv1"/>
                 <outlet property="imageView" destination="A9O-Nr-Ti6" id="ofq-uF-9aE"/>
                 <outlet property="progress" destination="rwj-km-4OZ" id="9SH-rx-ITP"/>
             </connections>

@@ -11,7 +11,7 @@ protocol GalleryPresenterProtocol {
     init(viewController: GalleryViewProtocol, router: RouterProtocol)
     var items: [GalleryCellModel] { get set }
     func fetchItems()
-    func showDetails(model: DetailsViewModel)
+    func showDetails(indexPath: IndexPath)
 }
 
 // MARK: - Class
@@ -29,8 +29,11 @@ class GalleryPresenter: GalleryPresenterProtocol {
     }
     
     // MARK: - Protocol logics
-    func showDetails(model: DetailsViewModel) {
-        router?.showDetail(model: model)
+    func showDetails(indexPath: IndexPath) {
+        let cellModel = items[indexPath.row]
+        let detailsModel = DetailsViewModel(id: cellModel.id,
+                                            imageURL: cellModel.largeImageURL)
+        router?.showDetail(model: detailsModel)
     }
     
     func fetchItems() {
@@ -42,7 +45,9 @@ class GalleryPresenter: GalleryPresenterProtocol {
                     if  let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) {
                         let dataJson = try JSONDecoder().decode(JsonModel.Model.self, from: decodeData.data)
                         let items = dataJson.items.map{ item in
-                            GalleryCellModel(img: UIImage(), imageURL: item.webformatURL, loadDate: Date())
+                            GalleryCellModel(id: item.id,
+                                             webformatURL: item.webformatURL,
+                                             largeImageURL: item.largeImageURL)
                         }
                         self.items.append(contentsOf: items)
                         //viewController?.setSubTitle(subTitle: "items: \(self.items.count)")

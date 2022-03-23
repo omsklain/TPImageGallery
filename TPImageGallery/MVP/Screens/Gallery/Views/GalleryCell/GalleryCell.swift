@@ -14,6 +14,7 @@ class GalleryCell: UICollectionViewCell {
     // MARK: - IBOutlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var date: UILabel!
+    @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var progress: UIActivityIndicatorView!
     
     // MARK: - Internal vars
@@ -29,54 +30,34 @@ class GalleryCell: UICollectionViewCell {
     }
     
     // MARK: - Internal logics
-    func setup(model: GalleryCellModel?) {
+    
+    // MARK: - External logics
+    func setup(model: GalleryCellModel) {
         progress.isHidden = false
         progress.startAnimating()
         
-        guard let model = model else {
-            // TODO: Set image default
-            return
+        cellId = model.id
+        
+        // TODO: - refactoring
+        guard let url = URL(string: model.webformatURL) else { return }
+        MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
+            if error == nil, let data = data {
+                guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
+                if let image = UIImage(data: decodeData.data) {
+                    DispatchQueue.main.async {
+                        if self.cellId == model.id {
+                            self.idLabel.text = String(model.id)
+                            self.date.text = decodeData.date.toStringFormat("dd:MM:YYYY HH:mm:ss")
+                            self.imageView.image = image
+                        }
+                        self.progress.stopAnimating()
+                        self.progress.isHidden = true
+                    }
+                }
+            }
         }
         
-        //cellId = data.id
-        
-        date.text = model.loadDate.toStringFormat("dd:MM:YYYY HH:mm:ss")
-        imageView.image = model.img
-        
-        progress.isHidden = true
-        progress.stopAnimating()
     }
-    
-//    func configure(item: Item?) {
-//
-//        self.id.text = ""
-//        self.date.text = ""
-//        self.imageView.image = nil
-//
-//        self.progress.isHidden = false
-//        self.progress.startAnimating()
-//
-//        if let item = item {
-//            self.cellId = item.id
-//            self.id.text = String(item.id)
-//            guard let url = URL(string: item.webformatURL) else { return }
-//            MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
-//                if error == nil, let data = data {
-//                    guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
-//                    if let image = UIImage(data: decodeData.data) {
-//                        DispatchQueue.main.async { [weak self] in
-//                            if self?.itemId == item.id {
-//                                self?.date.text = decodeData.date.toStringFormat("d MMMM YYYY HH:mm:ss")
-//                                self?.imageView.image = image
-//                            }
-//                            self?.progress.stopAnimating()
-//                            self?.progress.isHidden = true
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
     
     
 }

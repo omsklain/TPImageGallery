@@ -80,9 +80,7 @@ extension GalleryViewController: UICollectionViewDataSource {
 extension GalleryViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let itemModel = DetailsViewModel(img: presenter.items[indexPath.item].img, imageURL: presenter.items[indexPath.item].imageURL, loadDate: presenter.items[indexPath.item].loadDate)
-        
-        presenter.showDetails(model: itemModel)
+        presenter.showDetails(indexPath: indexPath)
     }
     
 }

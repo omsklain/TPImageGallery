@@ -20,9 +20,8 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="GkR-WP-N81">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="GkR-WP-N81">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dOW-YR-i8F">
                         <size key="itemSize" width="128" height="128"/>
@@ -34,6 +33,12 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="GkR-WP-N81" secondAttribute="bottom" id="GUm-dK-1bg"/>
+                <constraint firstItem="GkR-WP-N81" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="QuN-rh-pbK"/>
+                <constraint firstItem="GkR-WP-N81" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="RVG-wb-RKC"/>
+                <constraint firstItem="GkR-WP-N81" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="wM5-8J-IFB"/>
+            </constraints>
             <point key="canvasLocation" x="131.8840579710145" y="75"/>
         </view>
     </objects>

@@ -10,8 +10,7 @@ import UIKit
 
 struct GalleryCellModel {
     
-    let img: UIImage
-    let imageURL: String
-    let loadDate: Date
-    
+    let id: Int
+    let webformatURL: String
+    let largeImageURL: String
 }

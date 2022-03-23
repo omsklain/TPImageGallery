@@ -8,7 +8,7 @@
 import UIKit
 
 protocol DetailsViewProtocol: AnyObject {
-    func setData(_ data: DetailsViewModel)
+    func setData( model: DetailsViewModel)
 }
 
 // MARK: - Class
@@ -37,18 +37,29 @@ class DetailsViewController: UIViewController {
 // MARK: - DetailsViewProtocol
 extension DetailsViewController: DetailsViewProtocol {
     
-    func setData(_ data: DetailsViewModel) {
+    func setData( model: DetailsViewModel) {
 
         indicator.isHidden = false
         indicator.startAnimating()
 
-        imageView.image = data.img
-        
-        navigationItem.title = "iD"
-        navigationItem.setSubTitle(data.loadDate.toStringFormat("dd:MM:YYYY HH:mm:ss"))
-        
-        indicator.stopAnimating()
-        indicator.isHidden = true
+        // TODO: - refactoring (Подзависает при переходе)
+        guard let url = URL(string: model.imageURL) else { return }
+        MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
+            if error == nil, let data = data {
+                guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
+                if let image = UIImage(data: decodeData.data) {
+                    DispatchQueue.main.async {
+                        self.navigationItem.title = String(model.id)
+                        self.navigationItem.setSubTitle(decodeData.date.toStringFormat("dd:MM:YYYY HH:mm:ss"))
+                        self.imageView.image = image
+
+                        self.indicator.stopAnimating()
+                        self.indicator.isHidden = true
+                    }
+                }
+            }
+        }
+
     }
     
     

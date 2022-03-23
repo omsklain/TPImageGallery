@@ -31,7 +31,7 @@ extension DetailsPresenter: DetailsPresenterProtocol {
     
     func upDateData() {
         guard let model = self.model else { return }
-        viewController?.setData(model)
+        viewController?.setData(model: model)
     }
 
 }
