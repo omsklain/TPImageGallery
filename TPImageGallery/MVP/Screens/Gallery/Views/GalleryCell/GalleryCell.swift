@@ -20,16 +20,17 @@ class GalleryCell: UICollectionViewCell {
     // MARK: - Internal vars
     private var cellId: Int?
     
-    // MARK: - External vars
-    
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupLayer()
+    }
+    
+    // MARK: - Internal logics
+    private func setupLayer() {
         self.layer.cornerRadius = 6
         self.layer.borderWidth = 0.5
         self.layer.borderColor = UIColor.gray.cgColor
     }
-    
-    // MARK: - Internal logics
     
     // MARK: - External logics
     func setup(model: GalleryCellModel) {
@@ -38,7 +39,7 @@ class GalleryCell: UICollectionViewCell {
         
         cellId = model.id
         
-        // TODO: - refactoring
+        // TODO: - refactoring  -  ПЕРЕНОС КОДА?
         guard let url = URL(string: model.webformatURL) else { return }
         MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
             if error == nil, let data = data {

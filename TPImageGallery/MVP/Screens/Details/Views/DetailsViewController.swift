@@ -8,7 +8,9 @@
 import UIKit
 
 protocol DetailsViewProtocol: AnyObject {
-    func setData( model: DetailsViewModel)
+    func setImage(_ image: UIImage)
+    func setNavigationTitle(title:String?)
+    func setNavigationSubTitle(subTitle: String?)
 }
 
 // MARK: - Class
@@ -17,6 +19,7 @@ class DetailsViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
+    @IBOutlet weak var navItem: UINavigationItem!
     
     // MARK: - Internal vars
     
@@ -26,8 +29,12 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.largeTitleDisplayMode = .never
+
+        indicator.isHidden = false
+        indicator.startAnimating()
+        
         presenter.upDateData()
+        
     }
     
     // MARK: - Internal logics
@@ -37,30 +44,29 @@ class DetailsViewController: UIViewController {
 // MARK: - DetailsViewProtocol
 extension DetailsViewController: DetailsViewProtocol {
     
-    func setData( model: DetailsViewModel) {
-
-        indicator.isHidden = false
-        indicator.startAnimating()
-
-        // TODO: - refactoring (Подзависает при переходе)
-        guard let url = URL(string: model.imageURL) else { return }
-        MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
-            if error == nil, let data = data {
-                guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
-                if let image = UIImage(data: decodeData.data) {
-                    DispatchQueue.main.async {
-                        self.navigationItem.title = String(model.id)
-                        self.navigationItem.setSubTitle(decodeData.date.toStringFormat("dd:MM:YYYY HH:mm:ss"))
-                        self.imageView.image = image
-
-                        self.indicator.stopAnimating()
-                        self.indicator.isHidden = true
-                    }
-                }
-            }
-        }
-
+    func setImage(_ image: UIImage) {
+        imageView.image = image
+        indicator.stopAnimating()
+        indicator.isHidden = true
     }
     
+    func setNavigationTitle(title: String?) {
+        if let title = title {
+            navItem.title = title
+        }
+    }
     
+    func setNavigationSubTitle(subTitle: String?) {
+        if let subTitle = subTitle {
+            navItem.setSubTitle(subTitle)
+        }
+    }
+    
+}
+
+// MARK: - UIBarPositioningDelegate
+extension DetailsViewController: UIBarPositioningDelegate {
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
+    }
 }
