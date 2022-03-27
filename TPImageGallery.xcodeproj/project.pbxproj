@@ -27,7 +27,6 @@
 		19AACBFB27EA53B000174D58 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19AACBF927EA53B000174D58 /* GalleryViewController.swift */; };
 		19AACBFC27EA53B000174D58 /* GalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19AACBFA27EA53B000174D58 /* GalleryViewController.xib */; };
 		19B2929F27E51A79002385E5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B2929E27E51A79002385E5 /* NetworkManager.swift */; };
-		19B292A127E51B0C002385E5 /* CachedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B292A027E51B0C002385E5 /* CachedManager.swift */; };
 		19B292B727E64A20002385E5 /* GalleryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B292B627E64A20002385E5 /* GalleryPresenter.swift */; };
 		19B292BB27E64A5E002385E5 /* DetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B292BA27E64A5E002385E5 /* DetailsPresenter.swift */; };
 		19B292C127E64BBC002385E5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19B292C027E64BBC002385E5 /* Main.storyboard */; };
@@ -61,7 +60,6 @@
 		19AACBF927EA53B000174D58 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		19AACBFA27EA53B000174D58 /* GalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryViewController.xib; sourceTree = "<group>"; };
 		19B2929E27E51A79002385E5 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		19B292A027E51B0C002385E5 /* CachedManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedManager.swift; sourceTree = "<group>"; };
 		19B292B627E64A20002385E5 /* GalleryPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPresenter.swift; sourceTree = "<group>"; };
 		19B292BA27E64A5E002385E5 /* DetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPresenter.swift; sourceTree = "<group>"; };
 		19B292C027E64BBC002385E5 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 				19000DBD27CA1E25004DDB0A /* README.md */,
 				191CEB9727BBEDFA006A65F8 /* TPImageGallery */,
 				191CEB9627BBEDFA006A65F8 /* Products */,
-				19233B5C27CA85C8003F033A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,13 +129,6 @@
 				190A678927D63E6400F0C3D1 /* Presenter.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		19233B5C27CA85C8003F033A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		19AACBF727EA475A00174D58 /* Views */ = {
@@ -175,7 +165,6 @@
 				19B292A227E5215F002385E5 /* Models */,
 				19B292C927E654DE002385E5 /* FrameWorks */,
 				19B2929E27E51A79002385E5 /* NetworkManager.swift */,
-				19B292A027E51B0C002385E5 /* CachedManager.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -366,7 +355,6 @@
 				19B2929F27E51A79002385E5 /* NetworkManager.swift in Sources */,
 				19B292B727E64A20002385E5 /* GalleryPresenter.swift in Sources */,
 				19AACBFB27EA53B000174D58 /* GalleryViewController.swift in Sources */,
-				19B292A127E51B0C002385E5 /* CachedManager.swift in Sources */,
 				190A678C27D75EA300F0C3D1 /* MDCache.swift in Sources */,
 				191CEB9B27BBEDFA006A65F8 /* SceneDelegate.swift in Sources */,
 			);

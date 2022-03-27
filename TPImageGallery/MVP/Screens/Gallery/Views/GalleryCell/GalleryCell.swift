@@ -38,17 +38,18 @@ class GalleryCell: UICollectionViewCell {
         progress.startAnimating()
         
         cellId = model.id
+        imageView.image = nil
         
         // TODO: - refactoring  -  ПЕРЕНОС КОДА?
-        guard let url = URL(string: model.webformatURL) else { return }
-        MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
+        NetworkManager.dataTask(.image(model.webformatURL)) { [unowned self] data, response, error in
             if error == nil, let data = data {
-                guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
-                if let image = UIImage(data: decodeData.data) {
+                if let image = UIImage(data: data),
+                   let httpResponse = response as? HTTPURLResponse,
+                   let date = httpResponse.value(forHTTPHeaderField: "Date") {
                     DispatchQueue.main.async {
                         if self.cellId == model.id {
                             self.idLabel.text = String(model.id)
-                            self.date.text = decodeData.date.toStringFormat("dd:MM:YYYY HH:mm:ss")
+                            self.date.text = date //date.toStringFormat("dd:MM:YYYY HH:mm:ss")
                             self.imageView.image = image
                         }
                         self.progress.stopAnimating()
@@ -57,7 +58,7 @@ class GalleryCell: UICollectionViewCell {
                 }
             }
         }
-        
+
     }
     
     

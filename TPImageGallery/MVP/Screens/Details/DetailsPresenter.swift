@@ -30,20 +30,23 @@ class DetailsPresenter {
 extension DetailsPresenter: DetailsPresenterProtocol {
     
     func upDateData() {
-        guard let model = self.model, let url = URL(string: model.imageURL) else { return }
+        guard let model = self.model else { return }
         viewController?.setNavigationTitle(title: String(model.id))
+        
         // TODO: - refactoring -  ПЕРЕНОС КОДА
-        MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
+        NetworkManager.dataTask(.image(model.imageURL)) { data, response, error in
             if error == nil, let data = data {
-                guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
-                if let image = UIImage(data: decodeData.data) {
+                if let image = UIImage(data: data),
+                   let httpResponse = response as? HTTPURLResponse,
+                   let date = httpResponse.value(forHTTPHeaderField: "Date")  {
                     DispatchQueue.main.async {
-                        self.viewController?.setNavigationSubTitle(subTitle: decodeData.date.toStringFormat("dd:MM:YYYY HH:mm:ss"))
+                        self.viewController?.setNavigationSubTitle(subTitle: date)
                         self.viewController?.setImage(image)
                     }
                 }
             }
         }
+
     }
 
 }

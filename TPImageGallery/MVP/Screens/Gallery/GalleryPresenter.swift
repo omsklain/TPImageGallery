@@ -26,6 +26,7 @@ class GalleryPresenter: GalleryPresenterProtocol {
         self.viewController = viewController
         self.router = router
         fetchItems()
+
     }
     
     // MARK: - Protocol logics
@@ -38,27 +39,23 @@ class GalleryPresenter: GalleryPresenterProtocol {
     
     func fetchItems() {
 
-        let url = "https://pixabay.com/api/?key=25724093-3271289b67930f6caed039a98&q=red&image_type=photo&page=1&per_page=20"
-        MDCachedData.shared.fetchDataByUrl(url) { [unowned self] data, error in
-            if error == nil, let data = data {
-                do {
-                    if  let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) {
-                        let dataJson = try JSONDecoder().decode(JsonModel.Model.self, from: decodeData.data)
-                        let items = dataJson.items.map{ item in
-                            GalleryCellModel(id: item.id,
-                                             webformatURL: item.webformatURL,
-                                             largeImageURL: item.largeImageURL)
-                        }
-                        self.items.append(contentsOf: items)
-                        //viewController?.setSubTitle(subTitle: "items: \(self.items.count)")
+        NetworkManager.dataTask(.items(1, "blue")) { data, response, error in
+            if let data = data, let httpResponse = response as? HTTPURLResponse,
+                let date = httpResponse.value(forHTTPHeaderField: "Date") {
+                print("response date: \(date)")
+                if let dataJson = try? JSONDecoder().decode(JsonModel.Model.self, from: data) {
+                    let items = dataJson.items.map{ item in
+                        GalleryCellModel(id: item.id,
+                                         webformatURL: item.webformatURL,
+                                         largeImageURL: item.largeImageURL)
                     }
-                } catch  {
-                    print("JSONDecoder:error: \(error)")
+                    self.items.append(contentsOf: items)
                 }
+
             }
         }
         
     }
-    
+
     
 }

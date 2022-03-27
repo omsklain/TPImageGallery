@@ -9,54 +9,69 @@ import Foundation
 
 // MARK: - Protocol
 protocol NetworkManagerProtocol: AnyObject {
-    
+    static func dataTask (_ endPoint: NetworkManager.EndPoint, completion: @escaping (Data?, URLResponse?, Error?) -> Void)
 }
 
 // MARK: - Class
 class NetworkManager {
-
-    //"https://pixabay.com/api/?key=25724093-3271289b67930f6caed039a98&q=red&image_type=photo&page=1&per_page=20"
-    lazy var url: URL? = {
-        var urlComponents = URLComponents()
-        urlComponents.scheme = "https"
-        urlComponents.host = "pixabay.com"
-        urlComponents.path = "/api/"
-        urlComponents.queryItems = [
-            URLQueryItem(name: "key", value: "25724093-3271289b67930f6caed039a98"),
-            URLQueryItem(name: "q", value: "red"),
-            URLQueryItem(name: "image_type", value: "photo"),
-            URLQueryItem(name: "page", value: "1"),
-            URLQueryItem(name: "per_page", value: "20")]
-
-        return urlComponents.url
-    }()
+    
+    enum EndPoint {
+//        static let per_page = 20
+//        private var baseURL: URL { URL(string: "https://pixabay.com/api")! }
+//        private var key: String { "25724093-3271289b67930f6caed039a98" }
+        
+        case items(Int, String)
+        case image(String)
+        
+        var request: URLRequest? {
+            
+            switch self {
+                case .items(let page, let filter):
+                    guard let url = URL(string: "https://pixabay.com/api/?key=25724093-3271289b67930f6caed039a98&q=\(filter)&image_type=photo&page=\(page)&per_page=20") else { return nil }
+                    return URLRequest(url: url)
+                
+                case .image(let url):
+                    guard let url = URL(string: url) else { return nil }
+                    return URLRequest(url: url)
+            }
+            
+        }
+        
+    }
     
 }
 
 // MARK: - NetworkManagerProtocol
 extension NetworkManager: NetworkManagerProtocol {
     
+    static func dataTask (_ endPoint: EndPoint, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        guard let request = endPoint.request else { return }
+        
+        //TODO: - Убрать и настроить отображение ячеек (не работает из кеша) - наверное с потоками чтото dataTask
+        /// ---
+        if let cachedResponse = URLSession.shared.configuration.urlCache?.cachedResponse(for: request) {
+            return completion(cachedResponse.data, cachedResponse.response, nil)
+        }
+        /// ---
+        
+        let dataTask = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error == nil, let data = data, let response = response {
+                return completion(data, response, nil)
+            }
+            
+            if let error = error {
+                print(error.localizedDescription)
+                
+                if let cachedResponse = URLSession.shared.configuration.urlCache?.cachedResponse(for: request) {
+                    return completion(cachedResponse.data, cachedResponse.response, error)
+                }
+            }
+            
+            completion(data, response, error)
+        }
+        dataTask.resume()
+    }
+    
+    
 }
 
-
-//func setup(data: DetailsModel) {
-//        self.navigationItem.title = ""
-//        self.navigationItem.setSubTitle("")
-//        if let item = item {
-//            self.navigationItem.title = String(item.id)
-//            guard let url = URL(string: item.largeImageURL) else { return }
-//            MDCachedData.shared.fetchDataByUrl(url.absoluteString) { [unowned self] data, error in
-//                if error == nil, let data = data {
-//                    guard let decodeData = try? JSONDecoder().decode(MDCachedData.DataItem.self, from: data) else { return }
-//                    if let image = UIImage(data: decodeData.data) {
-//                        DispatchQueue.main.async { [weak self] in
-//                            self?.navigationItem.setSubTitle(decodeData.date.toStringFormat("d MMMM YYYY HH:mm:ss"))
-//                            self?.imageView.image = image
-//                            self?.progress.stopAnimating()
-//                            self?.progress.isHidden = true
-//                        }
-//                    }
-//                }
-//            }
-//        }
-// }
