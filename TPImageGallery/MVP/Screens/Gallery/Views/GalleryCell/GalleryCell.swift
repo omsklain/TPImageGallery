@@ -25,6 +25,12 @@ class GalleryCell: UICollectionViewCell {
         setupLayer()
     }
     
+    override func prepareForReuse() {
+            super.prepareForReuse()
+            //imageView.kf.cancelDownloadTask()
+            imageView.image = nil
+        }
+    
     // MARK: - Internal logics
     private func setupLayer() {
         self.layer.cornerRadius = 6
@@ -41,24 +47,20 @@ class GalleryCell: UICollectionViewCell {
         imageView.image = nil
         
         // TODO: - refactoring  -  ПЕРЕНОС КОДА?
-        NetworkManager.dataTask(.image(model.webformatURL)) { [unowned self] data, response, error in
-            if error == nil, let data = data {
-                if let image = UIImage(data: data),
-                   let httpResponse = response as? HTTPURLResponse,
-                   let date = httpResponse.value(forHTTPHeaderField: "Date") {
-                    DispatchQueue.main.async {
-                        if self.cellId == model.id {
-                            self.idLabel.text = String(model.id)
-                            self.date.text = date //date.toStringFormat("dd:MM:YYYY HH:mm:ss")
-                            self.imageView.image = image
-                        }
-                        self.progress.stopAnimating()
-                        self.progress.isHidden = true
+        DataSourceManager.shared.fetch(model.webformatURL) { [weak self] data, error in
+            guard let self = self else { return }
+            if error == nil, let data = data, let image = UIImage(data: data.data) {
+                DispatchQueue.main.async {
+                    if self.cellId == model.id {
+                        self.idLabel.text = String(model.id)
+                        self.date.text = data.date.toStringFormat("dd.MM.YYYY HH:mm:ss")
+                        self.imageView.image = image
                     }
+                    self.progress.stopAnimating()
+                    self.progress.isHidden = true
                 }
             }
         }
-
     }
     
     

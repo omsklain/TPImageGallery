@@ -33,20 +33,17 @@ extension DetailsPresenter: DetailsPresenterProtocol {
         guard let model = self.model else { return }
         viewController?.setNavigationTitle(title: String(model.id))
         
-        // TODO: - refactoring -  ПЕРЕНОС КОДА
-        NetworkManager.dataTask(.image(model.imageURL)) { data, response, error in
-            if error == nil, let data = data {
-                if let image = UIImage(data: data),
-                   let httpResponse = response as? HTTPURLResponse,
-                   let date = httpResponse.value(forHTTPHeaderField: "Date")  {
-                    DispatchQueue.main.async {
-                        self.viewController?.setNavigationSubTitle(subTitle: date)
-                        self.viewController?.setImage(image)
-                    }
+        // TODO: - refactoring  -  ПЕРЕНОС КОДА?
+        DataSourceManager.shared.fetch(model.imageURL) { [weak self] data, error in
+            guard let self = self else { return }
+            if error == nil, let data = data, let image = UIImage(data: data.data) {
+                DispatchQueue.main.async {
+                    self.viewController?.setNavigationSubTitle(subTitle: data.date.toStringFormat("dd.MM.YYYY HH:mm:ss"))
+                    self.viewController?.setImage(image)
                 }
             }
         }
-
     }
+    
 
 }

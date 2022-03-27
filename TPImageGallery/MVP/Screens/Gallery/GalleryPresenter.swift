@@ -16,17 +16,19 @@ protocol GalleryPresenterProtocol {
 
 // MARK: - Class
 class GalleryPresenter: GalleryPresenterProtocol {
-
+    
     // MARK: - External vars
     var router: RouterProtocol?
     weak var viewController: GalleryViewProtocol?
     var items = [GalleryCellModel]()
     
+    // MARK: - Internal vars
+    private var isUpdatingItems = false
+    private var currentPage = 1
+    
     required init(viewController: GalleryViewProtocol, router: RouterProtocol) {
         self.viewController = viewController
         self.router = router
-        fetchItems()
-
     }
     
     // MARK: - Protocol logics
@@ -38,24 +40,34 @@ class GalleryPresenter: GalleryPresenterProtocol {
     }
     
     func fetchItems() {
-
-        NetworkManager.dataTask(.items(1, "blue")) { data, response, error in
-            if let data = data, let httpResponse = response as? HTTPURLResponse,
-                let date = httpResponse.value(forHTTPHeaderField: "Date") {
-                print("response date: \(date)")
-                if let dataJson = try? JSONDecoder().decode(JsonModel.Model.self, from: data) {
+        if isUpdatingItems { return }
+        
+        let urlString = "https://pixabay.com/api/?key=25724093-3271289b67930f6caed039a98&q=red&image_type=photo&page=\(currentPage)&per_page=20"
+        
+        isUpdatingItems = true
+        
+        DataSourceManager.shared.fetch(urlString) { [weak self] data, error in
+            guard let self = self else { return }
+            if error == nil, let data = data {
+                do {
+                    let dataJson = try JSONDecoder().decode(JsonModel.Model.self, from: data.data)
                     let items = dataJson.items.map{ item in
                         GalleryCellModel(id: item.id,
                                          webformatURL: item.webformatURL,
                                          largeImageURL: item.largeImageURL)
                     }
+                    let lastIndexItems = items.count
                     self.items.append(contentsOf: items)
+                    let indexPaths = (lastIndexItems..<self.items.count).map { IndexPath(item: $0, section: 0) }
+                    self.isUpdatingItems = false
+                    self.currentPage += 1
+                    self.viewController?.addItems(indexPaths: indexPaths)
+                } catch  {
+                    print("JSONDecoder:error: \(error)")
                 }
-
             }
         }
         
     }
-
     
 }

@@ -9,6 +9,7 @@ import UIKit
 
 protocol GalleryViewProtocol: AnyObject {
     func setSubTitle (subTitle: String)
+    func addItems (indexPaths: [IndexPath])
 }
 
 // MARK: - Class
@@ -30,16 +31,10 @@ class GalleryViewController: UIViewController {
         navigationItem.backButtonTitle = "Back"
         
         setupCollectionView()
-        //collectionView.reloadData()
         
-        //        if presenter.items.count <= 20 {
-        //            presenter.fetchItems { [unowned self] in
-        //                DispatchQueue.main.async {
-        //                    self.collectionView.reloadData()
-        //                }
-        //            }
-        //        }
+        presenter.fetchItems()
         
+
     }
     
     // MARK: - Internal logics
@@ -52,10 +47,25 @@ class GalleryViewController: UIViewController {
         collectionView.register(nib, forCellWithReuseIdentifier: GalleryCell.reuseIdentifier)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y + view.frame.size.height > scrollView.contentSize.height * 0.8 {
+            presenter.fetchItems()
+        }
+    }
+    
 }
 
 // MARK: - GalleryViewProtocol
 extension GalleryViewController: GalleryViewProtocol {
+    
+    func addItems (indexPaths: [IndexPath]) {
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView?.performBatchUpdates({
+                self?.collectionView?.insertItems(at: indexPaths)
+            }, completion: nil)
+            //self?.collectionView.insertItems(at: indexPaths)
+        }
+    }
     
     func setSubTitle (subTitle: String) {
         navigationItem.setSubTitle(subTitle)
@@ -117,26 +127,17 @@ extension GalleryViewController: UICollectionViewDelegateFlowLayout {
 extension GalleryViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for _ in indexPaths {
-            //            if indexPath.row >= self.presenter.items.count - 1 {
-            //                let oldCountItems = self.presenter.items.count
-            //                self.presenter.appendItemsNextPage { [unowned self] in
-            //                    var indexPaths: [IndexPath] = []
-            //                    for index in oldCountItems ... self.presenter.items.count - 1 {
-            //                        let indexPath = IndexPath(row:  index, section: 0)
-            //                        indexPaths.append(indexPath)
-            //                    }
-            //                    DispatchQueue.main.async {
-            //                        self.collectionView?.performBatchUpdates({
-            //                            self.collectionView?.insertItems(at: indexPaths)
-            //                        }, completion: nil)
-            //                    }
-            //                }
-            //            }
+        for indexPath in indexPaths {
+            if indexPath.row >= self.presenter.items.count - 2 {
+                //presenter.fetchItems()
+            }
         }
     }
     
+    
 }
+
+
 
 
 
