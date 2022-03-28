@@ -12,14 +12,10 @@ protocol GalleryViewProtocol: AnyObject {
     func addItems (indexPaths: [IndexPath])
 }
 
-// MARK: - Class
 class GalleryViewController: UIViewController {
     
     // MARK: - IBOutlets
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    // MARK: - Internal vars
-    
     
     // MARK: - External vars
     var presenter: GalleryPresenterProtocol!
@@ -32,23 +28,19 @@ class GalleryViewController: UIViewController {
         
         setupCollectionView()
         
-        presenter.fetchItems()
-        
-
     }
     
     // MARK: - Internal logics
     func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.prefetchDataSource = self
         
         let nib = UINib(nibName: GalleryCell.reuseIdentifier, bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: GalleryCell.reuseIdentifier)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y + view.frame.size.height > scrollView.contentSize.height * 0.8 {
+        if scrollView.contentOffset.y + view.frame.size.height > scrollView.contentSize.height * 0.9 {
             presenter.fetchItems()
         }
     }
@@ -59,11 +51,8 @@ class GalleryViewController: UIViewController {
 extension GalleryViewController: GalleryViewProtocol {
     
     func addItems (indexPaths: [IndexPath]) {
-        DispatchQueue.main.async { [weak self] in
-            self?.collectionView?.performBatchUpdates({
-                self?.collectionView?.insertItems(at: indexPaths)
-            }, completion: nil)
-            //self?.collectionView.insertItems(at: indexPaths)
+        if presenter.items.count != collectionView.numberOfItems(inSection: 0) {
+            collectionView.insertItems(at: indexPaths)
         }
     }
     
@@ -122,20 +111,6 @@ extension GalleryViewController: UICollectionViewDelegateFlowLayout {
     
 }
 
-
-// MARK: - UICollectionViewDataSourcePrefetching
-extension GalleryViewController: UICollectionViewDataSourcePrefetching {
-    
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            if indexPath.row >= self.presenter.items.count - 2 {
-                //presenter.fetchItems()
-            }
-        }
-    }
-    
-    
-}
 
 
 

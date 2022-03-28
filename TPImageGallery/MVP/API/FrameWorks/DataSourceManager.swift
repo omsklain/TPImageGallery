@@ -7,21 +7,18 @@
 
 import Foundation
 
-// MARK: - Protocol
 protocol DataSourceManagerProtocol: AnyObject {
     func fetch (_ urlString: String, completion: @escaping (_ data: DataSourceManager.Model?, _ error: Error?) -> () )
 }
 
-// MARK: - Class
 class DataSourceManager {
     
-    // MARK: - Singleton
     static let shared = DataSourceManager()
     
-    // MARK: - Model cached
+    /// Model cached
     struct Model: Codable {
-       let data: Data
-       let date: Date
+        let data: Data
+        let date: Date
     }
     
     // MARK: - Internal vars
@@ -58,7 +55,9 @@ extension DataSourceManager: DataSourceManagerProtocol {
         }
         
         guard let url = URL(string: urlString) else { return }
-        let dataTask = session.dataTask(with: url) { data, response, error in
+        let dataTask = session.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else { return }
+            
             if let error = error {
                 return completion(nil, error)
             } else if let data = data, let response = response {
@@ -76,6 +75,5 @@ extension DataSourceManager: DataSourceManagerProtocol {
         }
         dataTask.resume()
     }
-    
     
 }

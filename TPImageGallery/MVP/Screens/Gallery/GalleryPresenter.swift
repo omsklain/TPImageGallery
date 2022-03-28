@@ -14,7 +14,6 @@ protocol GalleryPresenterProtocol {
     func showDetails(indexPath: IndexPath)
 }
 
-// MARK: - Class
 class GalleryPresenter: GalleryPresenterProtocol {
     
     // MARK: - External vars
@@ -34,8 +33,7 @@ class GalleryPresenter: GalleryPresenterProtocol {
     // MARK: - Protocol logics
     func showDetails(indexPath: IndexPath) {
         let cellModel = items[indexPath.row]
-        let detailsModel = DetailsViewModel(id: cellModel.id,
-                                            imageURL: cellModel.largeImageURL)
+        let detailsModel = DetailsViewModel(id: cellModel.id, imageURL: cellModel.largeImageURL)
         router?.showDetail(model: detailsModel)
     }
     
@@ -48,26 +46,30 @@ class GalleryPresenter: GalleryPresenterProtocol {
         
         DataSourceManager.shared.fetch(urlString) { [weak self] data, error in
             guard let self = self else { return }
+            
             if error == nil, let data = data {
                 do {
                     let dataJson = try JSONDecoder().decode(JsonModel.Model.self, from: data.data)
+                    
                     let items = dataJson.items.map{ item in
                         GalleryCellModel(id: item.id,
                                          webformatURL: item.webformatURL,
                                          largeImageURL: item.largeImageURL)
                     }
-                    let lastIndexItems = items.count
+                    
+                    let lastIndexItems = self.items.count
                     self.items.append(contentsOf: items)
                     let indexPaths = (lastIndexItems..<self.items.count).map { IndexPath(item: $0, section: 0) }
-                    self.isUpdatingItems = false
+                    
                     self.currentPage += 1
                     self.viewController?.addItems(indexPaths: indexPaths)
+                    self.isUpdatingItems = false
+                    
                 } catch  {
                     print("JSONDecoder:error: \(error)")
                 }
             }
         }
-        
     }
     
 }

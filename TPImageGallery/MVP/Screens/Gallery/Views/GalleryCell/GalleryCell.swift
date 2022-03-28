@@ -22,20 +22,23 @@ class GalleryCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         setupLayer()
+        
     }
     
     override func prepareForReuse() {
-            super.prepareForReuse()
-            //imageView.kf.cancelDownloadTask()
-            imageView.image = nil
-        }
+        super.prepareForReuse()
+        
+        imageView.image = nil
+        
+    }
     
     // MARK: - Internal logics
     private func setupLayer() {
-        self.layer.cornerRadius = 6
-        self.layer.borderWidth = 0.5
-        self.layer.borderColor = UIColor.gray.cgColor
+        layer.cornerRadius = 6
+        layer.borderWidth = 0.5
+        layer.borderColor = UIColor.gray.cgColor
     }
     
     // MARK: - External logics
@@ -46,7 +49,7 @@ class GalleryCell: UICollectionViewCell {
         cellId = model.id
         imageView.image = nil
         
-        // TODO: - refactoring  -  ПЕРЕНОС КОДА?
+        // TODO: - Возможно перенос?
         DataSourceManager.shared.fetch(model.webformatURL) { [weak self] data, error in
             guard let self = self else { return }
             if error == nil, let data = data, let image = UIImage(data: data.data) {
@@ -62,6 +65,5 @@ class GalleryCell: UICollectionViewCell {
             }
         }
     }
-    
     
 }

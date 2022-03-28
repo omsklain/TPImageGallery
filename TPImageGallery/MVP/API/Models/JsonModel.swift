@@ -28,6 +28,7 @@ struct JsonModel {
             totalHits = try values.decode(Int.self, forKey: .totalHits)
             items = try values.decode([Item].self, forKey: .items)
         }
+        
     }
     
     //MARK: - Item model
@@ -58,8 +59,8 @@ struct JsonModel {
             downloads = try values.decode(Int.self, forKey: .downloads)
             likes = try values.decode(Int.self, forKey: .likes)
         }
+        
     }
-    
     
 }
 

@@ -10,12 +10,12 @@ import UIKit
 public final class MCache<T>: MDCacheProtocol where T: Codable {
     
     private typealias cacheType = NSCache<NSString, NSData>
-
+    
     private lazy var cache: cacheType = {
         let cache = cacheType()
         return cache
     }()
-
+    
     public func load (forKey key: String) throws -> T? {
         try cache
             .object(forKey: NSString(string: key))
@@ -27,6 +27,5 @@ public final class MCache<T>: MDCacheProtocol where T: Codable {
         let data = try JSONEncoder().encode(value)
         cache.setObject(NSData(data: data), forKey: NSString(string: key))
     }
-
     
 }

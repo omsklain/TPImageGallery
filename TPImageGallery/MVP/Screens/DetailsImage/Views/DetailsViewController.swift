@@ -13,23 +13,19 @@ protocol DetailsViewProtocol: AnyObject {
     func setNavigationSubTitle(subTitle: String?)
 }
 
-// MARK: - Class
 class DetailsViewController: UIViewController {
-
+    
     // MARK: - IBOutlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     @IBOutlet weak var navItem: UINavigationItem!
-    
-    // MARK: - Internal vars
-    
     
     // MARK: - External vars
     var presenter: DetailsPresenterProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         indicator.isHidden = false
         indicator.startAnimating()
         
@@ -37,8 +33,6 @@ class DetailsViewController: UIViewController {
         
     }
     
-    // MARK: - Internal logics
-
 }
 
 // MARK: - DetailsViewProtocol
@@ -62,11 +56,4 @@ extension DetailsViewController: DetailsViewProtocol {
         }
     }
     
-}
-
-// MARK: - UIBarPositioningDelegate
-extension DetailsViewController: UIBarPositioningDelegate {
-    func position(for bar: UIBarPositioning) -> UIBarPosition {
-        return .topAttached
-    }
 }

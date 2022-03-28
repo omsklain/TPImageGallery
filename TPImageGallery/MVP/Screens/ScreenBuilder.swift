@@ -12,7 +12,6 @@ protocol ScreenBuilderProtocol {
     func buildDetailsScreen(model: DetailsViewModel) -> UIViewController
 }
 
-// MARK: - Class
 class ScreenBuilder { }
 
 // MARK: - ScreenBuilderProtocol
@@ -33,6 +32,5 @@ extension ScreenBuilder: ScreenBuilderProtocol {
         
         return viewController
     }
-    
     
 }

@@ -5,7 +5,6 @@
 //  Created by Константин Туголуков on 19.03.2022.
 //
 
-import Foundation
 import UIKit
 
 // MARK: - Custom Title ( title + subtitle)

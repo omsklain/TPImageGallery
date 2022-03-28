@@ -34,6 +34,5 @@ public final class MDCache<T>: MDCacheProtocol where T: Codable {
         try memory.save(data, forKey: key)
         try disk.save(data, forKey: key)
     }
-
     
 }

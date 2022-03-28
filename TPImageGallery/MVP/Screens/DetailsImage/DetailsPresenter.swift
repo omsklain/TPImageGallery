@@ -12,7 +12,6 @@ protocol DetailsPresenterProtocol {
     func upDateData()
 }
 
-// MARK: - Class
 class DetailsPresenter {
     
     // MARK: - External vars
@@ -33,7 +32,7 @@ extension DetailsPresenter: DetailsPresenterProtocol {
         guard let model = self.model else { return }
         viewController?.setNavigationTitle(title: String(model.id))
         
-        // TODO: - refactoring  -  ПЕРЕНОС КОДА?
+        // TODO: - Возможно перенос?
         DataSourceManager.shared.fetch(model.imageURL) { [weak self] data, error in
             guard let self = self else { return }
             if error == nil, let data = data, let image = UIImage(data: data.data) {
@@ -45,5 +44,4 @@ extension DetailsPresenter: DetailsPresenterProtocol {
         }
     }
     
-
 }

@@ -10,10 +10,8 @@ import UIKit
 protocol RouterProtocol {
     func initialViewController()
     func showDetail(model: DetailsViewModel)
-    func popToRoot()
 }
 
-// MARK: - Class
 class Router {
     
     var navigationController: UINavigationController?
@@ -40,12 +38,6 @@ extension Router: RouterProtocol {
         if let navigationController = navigationController {
             guard let detailsViewController = screenBuilder?.buildDetailsScreen(model: model) else { return }
             navigationController.pushViewController(detailsViewController, animated: true)
-        }
-    }
-    
-    func popToRoot() {
-        if let navigationController = navigationController {
-            navigationController.popToRootViewController(animated: true)
         }
     }
     

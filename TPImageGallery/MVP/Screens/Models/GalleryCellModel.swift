@@ -13,4 +13,5 @@ struct GalleryCellModel {
     let id: Int
     let webformatURL: String
     let largeImageURL: String
+    
 }
